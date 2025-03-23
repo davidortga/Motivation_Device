@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Do it for them</title>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #eef2f3, #dfe7eb);
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 15px;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+    .image-container {
+      width: 95%;
+      max-width: 500px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background: #fff;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .image-container img {
+      width: 100%;
+      height: auto;
+      max-height: 70vh;
+      border-radius: 10px;
+      transition: opacity 1s ease-in-out;
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 18px;
+      color: #2c3e50;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <h1>Do it for them...</h1>
+  
+  <div class="image-container">
+    <img id="image" src="https://i.imgur.com/3YVYz7Q.jpeg" alt="Motivation Photo" />
+  </div>
+
+  <p class="message">Every step you take brings you closer to your dreams.</p>
+
+  <script>
+    let images = [
+      "https://i.imgur.com/3YVYz7Q.jpeg",
+      "https://i.imgur.com/ACNI2rd.jpeg"
+    ];
+    let index = 0;
+    
+    function changeImage() {
+      index = (index + 1) % images.length;
+      document.getElementById("image").style.opacity = 0;
+      setTimeout(() => {
+        document.getElementById("image").src = images[index];
+        document.getElementById("image").style.opacity = 1;
+      }, 500);
+    }
+
+    setInterval(changeImage, 5000); // Cambia cada 4 segundos
+  </script>
+</body>
+</html>
