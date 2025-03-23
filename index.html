@@ -1,35 +1,112 @@
-.image-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  filter: blur(40px) brightness(0.5);
-  z-index: 0;
-  opacity: 0.8;
-}
-
-    .image-container img {
-      width: 100%;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <title>Do it for them</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
       height: 100%;
-      object-fit: contain;
+      width: 100%;
+      overflow: hidden;
+      font-family: 'Quicksand', sans-serif;
+      background: radial-gradient(circle at center, #0b3c91, #0d47a1);
+      color: #1a1a1a;
+      text-align: center;
       position: relative;
-      z-index: 1;
-    }  
-
-    .overlay-text,
-    .message {
+    }
+    .particle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      opacity: 0;
+      animation: float 9s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+      }
+      25% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50px, -100vh) scale(1);
+        opacity: 0;
+      }
+    }
+    .image-container {
+      height: 100vh;
+      width: 100vw;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .image-container.show {
+      display: flex;
+    }
+    .image-container img {
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      border: none;
+      filter: blur(0);
+    }
+    .overlay-text {
+      position: absolute;
+      top: 20px;
+      width: 100%;
+      font-size: 26px;
+      font-weight: bold;
+      color: #ffffff;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.6);
       z-index: 2;
     }
-</style>
+    .message {
+      position: absolute;
+      bottom: 20px;
+      width: 100%;
+      font-size: 18px;
+      font-style: italic;
+      color: #ffffff;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.6);
+      z-index: 2;
+    }
+    .fullscreen-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 132px;
+      height: 132px;
+      background: linear-gradient(145deg, #1565c0, #0d47a1);
+      color: #ffffff;
+      border: none;
+      border-radius: 66px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 3;
+      font-family: 'Quicksand', sans-serif;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 4px 8px rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .fullscreen-btn:hover {
+      transform: translate(-50%, -50%) scale(1.05);
+    }
+  </style>
 </head>
 <body>
   <div id="particles"></div>
   <button class="fullscreen-btn" onclick="revealMessage()">Ver mensaje</button>
 
   <div class="image-container" id="image-section">
-    <img id="image-blur" class="image-background" src="" alt="Blur Background" />
     <img id="user-image" src="" alt="Motivation Photo" />
     <div class="overlay-text">Do it for them...</div>
     <div class="message">Every step you take brings you closer to your dreams.</div>
@@ -47,14 +124,12 @@
     const button = document.querySelector(".fullscreen-btn");
 
     const imageMap = {
-      juan: "https://i.imgur.com/3YVYz7Q.jpeg",
-      maria: "https://i.imgur.com/ACNI2rd.jpeg",
-      luis: "https://i.imgur.com/3zyZ7mt.jpeg"
-    };
+  juan: "https://davidortga.github.io/motivation_device/images/juan.jpg",
+  maria: "https://davidortga.github.io/motivation_device/images/maria.jpg",
+  luis: "https://davidortga.github.io/motivation_device/images/luis.jpg"
+};
 
-    const selectedImage = imageMap[user] || imageMap.juan;
-imageElement.src = selectedImage;
-document.getElementById("image-blur").src = selectedImage;
+    imageElement.src = imageMap[user] || imageMap.juan;
 
     function revealMessage() {
       if (document.documentElement.requestFullscreen) {
