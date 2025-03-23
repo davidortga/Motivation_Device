@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <title>Do it for them</title>
@@ -11,10 +12,33 @@
       height: 100%;
       width: 100%;
       overflow: hidden;
-      font-family: 'Arial', sans-serif;
-      background: #f2f2f2;
+      font-family: 'Quicksand', sans-serif;
+      background: radial-gradient(circle at center, #0b3c91, #0d47a1);
       color: #1a1a1a;
       text-align: center;
+      position: relative;
+    }
+    .particle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      opacity: 0;
+      animation: float 9s ease-in-out infinite;
+    }
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+      }
+      25% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50px, -100vh) scale(1);
+        opacity: 0;
+      }
     }
     .image-container {
       height: 100vh;
@@ -57,18 +81,26 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      padding: 15px 30px;
-      font-size: 18px;
-      background-color: #1a1a1a;
-      color: #fff;
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(145deg, #1565c0, #0d47a1);
+      color: #ffffff;
       border: none;
-      border-radius: 8px;
+      border-radius: 60px;
+      font-size: 16px;
+      font-weight: bold;
       cursor: pointer;
       z-index: 3;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 4px 8px rgba(255, 255, 255, 0.2);
+      transition: transform 0.3s ease;
+    }
+    .fullscreen-btn:hover {
+      transform: translate(-50%, -50%) scale(1.05);
     }
   </style>
 </head>
 <body>
+  <div id="particles"></div>
   <button class="fullscreen-btn" onclick="revealMessage()">Ver mensaje</button>
 
   <div class="image-container" id="image-section">
@@ -106,6 +138,18 @@
       }
       imageSection.classList.add("show");
       button.style.display = "none";
+      document.getElementById("particles").style.display = "none";
+    }
+
+    // Generate particles
+    const particlesContainer = document.getElementById("particles");
+    for (let i = 0; i < 53; i++) {
+      const particle = document.createElement("div");
+      particle.classList.add("particle");
+      particle.style.left = Math.random() * 100 + "vw";
+      particle.style.top = Math.random() * 100 + "vh";
+      particle.style.animationDelay = Math.random() * 5 + "s";
+      particlesContainer.appendChild(particle);
     }
   </script>
 </body>
