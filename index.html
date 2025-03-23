@@ -54,7 +54,7 @@
     .image-container img {
       width: 100vw;
       height: 100vh;
-      object-fit: cover;
+      object-fit: contain;
       border: none;
       filter: blur(0);
     }
@@ -97,13 +97,37 @@
     .fullscreen-btn:hover {
       transform: translate(-50%, -50%) scale(1.05);
     }
-  </style>
+      .image-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: radial-gradient(circle at center, #0b3c91, #0d47a1);
+      filter: blur(40px);
+      z-index: 0;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      position: relative;
+      z-index: 1;
+    }  
+
+    .overlay-text,
+    .message {
+      z-index: 2;
+    }
+</style>
 </head>
 <body>
   <div id="particles"></div>
   <button class="fullscreen-btn" onclick="revealMessage()">Ver mensaje</button>
 
   <div class="image-container" id="image-section">
+    <div class="image-background"></div>
     <img id="user-image" src="" alt="Motivation Photo" />
     <div class="overlay-text">Do it for them...</div>
     <div class="message">Every step you take brings you closer to your dreams.</div>
