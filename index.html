@@ -6,6 +6,20 @@
   <title>Do it for them</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
   <style>
+    .blur-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #0b3c91;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: blur(25px) brightness(0.5);
+      z-index: 0;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
@@ -18,6 +32,7 @@
       text-align: center;
       position: relative;
     }
+
     .particle {
       position: absolute;
       width: 8px;
@@ -27,39 +42,72 @@
       opacity: 0;
       animation: float 9s ease-in-out infinite;
     }
+
     @keyframes float {
-      0% {
-        transform: translate(0, 0) scale(0.5);
-        opacity: 0;
-      }
-      25% {
-        opacity: 1;
-      }
-      100% {
-        transform: translate(-50px, -100vh) scale(1);
-        opacity: 0;
-      }
+      0% { transform: translate(0, 0) scale(0.5); opacity: 0; }
+      25% { opacity: 1; }
+      100% { transform: translate(-50px, -100vh) scale(1); opacity: 0; }
     }
+
     .image-container {
+      position: relative;
       height: 100vh;
       width: 100vw;
       display: none;
       justify-content: center;
       align-items: center;
-      position: relative;
+      animation: fadeIn 1.2s ease-in forwards;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 80%);
+      backdrop-filter: blur(5px);
     }
+
     .image-container.show {
       display: flex;
     }
+
+    .image-wrapper {
+      position: relative;
+      width: 95vw;
+      max-width: 95vw;
+      max-height: 95vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
     .image-container img {
-      max-width: 100vw;
-      max-height: 100vh;
+      max-width: 100%;
+      max-height: 100%;
       width: auto;
       height: auto;
       object-fit: contain;
-      border: none;
-      filter: blur(0);
+      animation: fadeInImg 1s ease-in-out forwards;
+      animation-delay: 0.3s;
+      opacity: 0;
+      display: block;
+      margin: auto;
+      mask-image: 
+        linear-gradient(to top, transparent 0%, black 5%, black 95%, transparent 100%),
+        linear-gradient(to left, transparent 0%, black 10%, black 90%, transparent 100%);
+      -webkit-mask-image: 
+        linear-gradient(to top, transparent 0%, black 5%, black 95%, transparent 100%),
+        linear-gradient(to left, transparent 0%, black 10%, black 90%, transparent 100%);
+      mask-composite: intersect;
+      -webkit-mask-composite: destination-in;
+      z-index: 2;
     }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeInImg {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .overlay-text {
       position: absolute;
       top: 20px;
@@ -70,6 +118,7 @@
       text-shadow: 0 2px 5px rgba(0,0,0,0.6);
       z-index: 2;
     }
+
     .message {
       position: absolute;
       bottom: 20px;
@@ -80,6 +129,7 @@
       text-shadow: 0 2px 5px rgba(0,0,0,0.6);
       z-index: 2;
     }
+
     .fullscreen-btn {
       position: absolute;
       top: 50%;
@@ -99,6 +149,7 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 4px 8px rgba(255, 255, 255, 0.2);
       transition: transform 0.3s ease;
     }
+
     .fullscreen-btn:hover {
       transform: translate(-50%, -50%) scale(1.05);
     }
@@ -109,7 +160,10 @@
   <button class="fullscreen-btn" onclick="revealMessage()">Ver mensaje</button>
 
   <div class="image-container" id="image-section">
-    <img id="user-image" src="" alt="Motivation Photo" />
+    <div id="blur-background" class="blur-bg"></div>
+    <div class="image-wrapper">
+      <img id="user-image" src="" alt="Motivation Photo" />
+    </div>
     <div class="overlay-text">Do it for them...</div>
     <div class="message">Every step you take brings you closer to your dreams.</div>
   </div>
@@ -122,6 +176,7 @@
 
     const user = getQueryParam("user");
     const imageElement = document.getElementById("user-image");
+    const blurBackground = document.getElementById("blur-background");
     const imageSection = document.getElementById("image-section");
     const button = document.querySelector(".fullscreen-btn");
 
@@ -131,11 +186,9 @@
       luis: "https://davidortga.github.io/Motivation_Device/images/luis.jpg"
     };
 
-    if (imageMap[user]) {
-      imageElement.src = imageMap[user];
-    } else {
-      imageElement.src = imageMap.juan;
-    }
+    const selectedImage = imageMap[user] || imageMap.juan;
+    imageElement.src = selectedImage;
+    blurBackground.style.backgroundImage = `url(${selectedImage})`;
 
     function revealMessage() {
       if (document.documentElement.requestFullscreen) {
@@ -150,7 +203,6 @@
       document.getElementById("particles").style.display = "none";
     }
 
-    // Generate particles
     const particlesContainer = document.getElementById("particles");
     for (let i = 0; i < 53; i++) {
       const particle = document.createElement("div");
