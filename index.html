@@ -2,35 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <title>Do it for them</title>
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gift Creator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    .blur-bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: #0b3c91;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      filter: blur(25px) brightness(0.5);
-      z-index: 0;
-    }
-
-    html, body {
+    body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
       font-family: 'Quicksand', sans-serif;
-      background: radial-gradient(circle at center, #0b3c91, #0d47a1);
-      color: #1a1a1a;
-      text-align: center;
+      background: linear-gradient(135deg, #0b3c91, #0d47a1);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .form-container {
+      background-color: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 500px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       position: relative;
+      z-index: 2;
+    }
+
+    h2 {
+      margin-top: 0;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-weight: 500;
+      margin-bottom: 5px;
+      display: block;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 16px;
+      box-sizing: border-box;
+    }
+
+    input, textarea, select {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      background: linear-gradient(145deg, #1e88e5, #1565c0);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 18px rgba(21, 101, 192, 0.6);
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 22px rgba(21, 101, 192, 0.8);
+    }
+
+    .success {
+      text-align: center;
+      font-size: 18px;
+      color: #90ee90;
     }
 
     .particle {
@@ -41,6 +98,7 @@
       border-radius: 50%;
       opacity: 0;
       animation: float 9s ease-in-out infinite;
+      z-index: 1;
     }
 
     @keyframes float {
@@ -48,153 +106,94 @@
       25% { opacity: 1; }
       100% { transform: translate(-50px, -100vh) scale(1); opacity: 0; }
     }
-
-    .image-container {
-      position: relative;
-      height: 100vh;
-      width: 100vw;
-      display: none;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 1.2s ease-in forwards;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.08), transparent 80%);
-      backdrop-filter: blur(5px);
-    }
-
-    .image-container.show {
-      display: flex;
-    }
-
-    .image-wrapper {
-      position: relative;
-      width: 95vw;
-      max-width: 95vw;
-      max-height: 95vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    canvas {
-      max-width: 100%;
-      max-height: 100%;
-      display: block;
-      z-index: 2;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .overlay-text {
-      position: absolute;
-      top: 20px;
-      width: 100%;
-      font-size: 26px;
-      font-weight: bold;
-      color: #ffffff;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.6);
-      z-index: 2;
-    }
-
-    .message {
-      position: absolute;
-      bottom: 20px;
-      width: 100%;
-      font-size: 18px;
-      font-style: italic;
-      color: #ffffff;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.6);
-      z-index: 2;
-    }
-
-    .fullscreen-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 132px;
-      height: 132px;
-      background: linear-gradient(145deg, #1565c0, #0d47a1);
-      color: #ffffff;
-      border: none;
-      border-radius: 66px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 3;
-      font-family: 'Quicksand', sans-serif;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 4px 8px rgba(255, 255, 255, 0.2);
-      transition: transform 0.3s ease;
-    }
-
-    .fullscreen-btn:hover {
-      transform: translate(-50%, -50%) scale(1.05);
-    }
   </style>
 </head>
 <body>
   <div id="particles"></div>
-  <button class="fullscreen-btn" onclick="revealMessage()">Ver mensaje</button>
 
-  <div class="image-container" id="image-section">
-    <div id="blur-background" class="blur-bg"></div>
-    <div class="image-wrapper">
-      <canvas id="image-canvas"></canvas>
-    </div>
-    <div class="overlay-text">Do it for them...</div>
-    <div class="message">Every step you take brings you closer to your dreams.</div>
+  <div class="form-container">
+    <h2>Crear regalo personalizado</h2>
+    <form id="giftForm">
+      <div>
+        <label for="email">Tu correo</label>
+        <input type="email" id="email" required>
+      </div>
+
+      <div>
+        <label for="topMessage">Mensaje superior (máx. 30 caracteres)</label>
+        <input type="text" id="topMessage" maxlength="30" required>
+      </div>
+
+      <div>
+        <label for="bottomMessage">Mensaje inferior (máx. 100 caracteres)</label>
+        <textarea id="bottomMessage" rows="3" maxlength="100" required></textarea>
+      </div>
+
+      <div>
+        <label for="style">Estilo visual</label>
+        <select id="style" required>
+          <option value="minimal">Minimalista</option>
+          <option value="classic">Clásico</option>
+          <option value="modern">Moderno</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="photo">Sube tu imagen</label>
+        <input type="file" id="photo" accept="image/*" required />
+      </div>
+
+      <button type="submit">Enviar</button>
+    </form>
+    <div class="success" id="successMessage" style="display: none;">¡Datos enviados con éxito!</div>
   </div>
 
-  <script>
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-storage.js";
 
-    const user = getQueryParam("user");
-    const blurBackground = document.getElementById("blur-background");
-    const imageSection = document.getElementById("image-section");
-    const button = document.querySelector(".fullscreen-btn");
-    const canvas = document.getElementById("image-canvas");
-    const ctx = canvas.getContext("2d");
-
-    const imageMap = {
-      juan: "https://davidortga.github.io/Motivation_Device/images/juan.jpg",
-      maria: "https://davidortga.github.io/Motivation_Device/images/maria.jpg",
-      luis: "https://davidortga.github.io/Motivation_Device/images/luis.jpg"
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
 
-    const selectedImage = imageMap[user] || imageMap.juan;
-    const img = new Image();
-    img.crossOrigin = "Anonymous";
-    img.onload = () => {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.drawImage(img, 0, 0);
-    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const storage = getStorage(app);
 
-    img.src = selectedImage;
-    blurBackground.style.backgroundImage = `radial-gradient(circle, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)), url(${selectedImage})`;
+    document.getElementById("giftForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    function revealMessage() {
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-      } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen();
-      } else if (document.documentElement.msRequestFullscreen) {
-        document.documentElement.msRequestFullscreen();
-      }
-      imageSection.classList.add("show");
-      button.style.display = "none";
-      document.getElementById("particles").style.display = "none";
-    }
+      const email = document.getElementById("email").value;
+      const topMessage = document.getElementById("topMessage").value;
+      const bottomMessage = document.getElementById("bottomMessage").value;
+      const style = document.getElementById("style").value;
+      const file = document.getElementById("photo").files[0];
+
+      const fileRef = ref(storage, `photos/${Date.now()}_${file.name}`);
+      await uploadBytes(fileRef, file);
+      const photoURL = await getDownloadURL(fileRef);
+
+      await addDoc(collection(db, "orders"), {
+        email,
+        topMessage,
+        bottomMessage,
+        style,
+        photoURL,
+        createdAt: new Date()
+      });
+
+      document.getElementById("giftForm").reset();
+      document.getElementById("successMessage").style.display = "block";
+    });
 
     const particlesContainer = document.getElementById("particles");
-    for (let i = 0; i < 53; i++) {
+    for (let i = 0; i < 60; i++) {
       const particle = document.createElement("div");
       particle.classList.add("particle");
       particle.style.left = Math.random() * 100 + "vw";
